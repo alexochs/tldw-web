@@ -31,10 +31,13 @@ export default function ExtensionPage() {
 
     function Authenticated() {
         return (
-            <Box>
-                <Text>Authenicated!</Text>
-                <Button onClick={supabase.auth.signOut}>Logout</Button>
-            </Box>
+            <Center flexDir={"column"}>
+                <Stack spacing="1rem">
+                    <Heading>You&apos;re logged in 👋</Heading>
+                    <Text fontSize="2xl">But we&apos;re still working here 👷‍♂️</Text>
+                    <Button onClick={() => router.push("/")} fontSize="5xl" py="2rem" px="1rem" colorScheme={"yellow"} rounded="2xl">🔙</Button>
+                </Stack>
+            </Center>
         );
     }
 
@@ -47,28 +50,30 @@ export default function ExtensionPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Box w="100vw" flexDir={"column"} fontSize="xl" pt="rem">
+        <Box w="100vw" minH="100vh" flexDir={"column"} fontSize="xl" pt="2rem" bg="rgb(232, 220, 202)">
+          <Link href="/">
             <Center>
-                <Heading fontSize={["5xl", "8xl"]}>
+              <Heading fontSize={["5xl", "8xl"]}>
                 Too Lazy; 🥱<br/>Didn&apos;t Watch 👀
-                </Heading>
+              </Heading>
             </Center>
             <Center>
-                <Text fontSize={["xl", "4xl"]} fontWeight={"normal"}>
-                YouTube Summary Database by AI 🤖
-                </Text>
+              <Text fontSize={["sm", "3xl"]} fontWeight={"normal"} pl="1rem" pr="2rem">
+                A database of YouTube summaries made by AI 🤖
+              </Text>
             </Center>
-            <Box py="1rem"/>
-            <Center flexDir={"column"} h="360px">
-                <Stack w={["95vw", "36rem"]} px="2.5vw">
-                    {session && session.user ? <Authenticated/> : <NotAuthenticated/>}
-                </Stack>
-            </Center>
+          </Link>
+          <Box py="1rem"/>
+          <Center>
+            <Stack w={["95vw", "36rem"]} px="2.5vw">
+                {session && session.user ? <Authenticated /> : <NotAuthenticated />}
+            </Stack>
+          </Center>
         </Box>
-        <Center py="1rem">
-            <Link href="https://alexochs.de" target="_blank">
-            <Text fontSize={"xs"}>Made with ❤️ by <b>Alex Ochs - Web & Software Developer 👨🏻‍💻</b></Text>
-            </Link>
+        <Center py="1rem" bg="rgb(232, 220, 202)">
+          <Link href="https://alexochs.de" target="_blank">
+            <Text fontSize={["xs", "md"]}>Made with ❤️ by <b>Alex Ochs - Web & Software Developer 👨🏻‍💻</b></Text>
+          </Link>
         </Center>
       </main>
     </>

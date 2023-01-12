@@ -3,10 +3,14 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import { Box, Button, Center, Heading, Input, Link, Stack, Text } from '@chakra-ui/react';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
   const [value, setValue] = useState('')
   const handleChange = (event: any) => setValue(event.target.value)
 
@@ -19,20 +23,20 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Box w="100vw" h="100vh" flexDir={"column"} fontSize="xl" pt="2rem">
+        <Box w="100vw" minH="100vh" flexDir={"column"} fontSize="xl" pt="2rem" bg="rgb(232, 220, 202)">
           <Center>
             <Heading fontSize={["5xl", "8xl"]}>
               Too Lazy; 🥱<br/>Didn&apos;t Watch 👀
             </Heading>
           </Center>
           <Center>
-            <Text fontSize={["xl", "4xl"]} fontWeight={"normal"}>
-              YouTube Summary Database by AI 🤖
+            <Text fontSize={["sm", "3xl"]} fontWeight={"normal"} pl="1rem" pr="2rem">
+              A database of YouTube summaries made by AI 🤖
             </Text>
           </Center>
           <Box py="1rem"/>
           <Center>
-            <Stack w={["95vw", "36rem"]} px="2.5vw">
+            <Stack w={["95vw", "48rem"]} px="2.5vw">
               <Input
                 value={value}
                 onChange={handleChange}
@@ -42,15 +46,18 @@ export default function Home() {
                 variant="filled"
                 rounded="2xl"
                 fontSize={["md", "xl"]}
-                maxW="36rem"
+                maxW={["36rem", "80vw"]}
                 py="1rem"
               />
-              <Button colorScheme={"red"} size="lg" rounded="2xl" disabled fontSize={["2xl", "3xl"]} p="2rem">
-                Out of Juice 🥤
+              <Button isLoading={loading} colorScheme={"red"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={() => {router.push("/summary?url=" + value); setLoading(true)}}>
+                Sum it up 😎
+              </Button>
+              <Button isLoading={loading} colorScheme={"yellow"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={() => {router.push("/login");}}>
+                Login ➡️
               </Button>
             </Stack>
           </Center>
-          <Box py="2rem"/>
+          <Box py="4rem"/>
           <Center>
             <Stack w={["95vw", "36rem"]} px="2.5vw">
               <Heading fontSize={["3xl", "5xl"]}>TL;DW 2 GO 🏃‍♂️</Heading>
@@ -61,7 +68,7 @@ export default function Home() {
             </Stack>
           </Center>
         </Box>
-        <Center py="1rem">
+        <Center pt="4rem" pb="1rem"  bg="rgb(232, 220, 202)">
           <Link href="https://alexochs.de" target="_blank">
             <Text fontSize={["xs", "md"]}>Made with ❤️ by <b>Alex Ochs - Web & Software Developer 👨🏻‍💻</b></Text>
           </Link>

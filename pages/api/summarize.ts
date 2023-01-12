@@ -25,6 +25,7 @@ function runMiddleware(
   return new Promise((resolve, reject) => {
     fn(req, res, async (result: any) => {
       if (result instanceof Error) {
+        console.log("Some error shit!");
         return reject(result)
       }
 
@@ -80,7 +81,11 @@ function runMiddleware(
   }
 
   console.log("Fetching transcription...");
-  const transcriptionResponse = await fetch(`https://tldw-python.vercel.app/api?videoId=${videoId}&title=${title}`);
+  const transcriptionResponse = await fetch(`https://tldw-python.vercel.app/api?videoId=${videoId}&title=${title}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+  }});
   const transcription = await transcriptionResponse.json();
 
   if (!transcription) {
@@ -91,8 +96,8 @@ function runMiddleware(
     return;
   }
 
-  console.log("Creating prompt...");
-  const prompt = 'Summarize a YouTube Video with the title "' + title + '" and the following transcript: "' + transcription.transcript + '"';
+  console.log("Creating prompt..." + title);
+  const prompt = 'Summarize a YouTube Video with the title "' + title.slice(0, title.length - 1) + '" and the following transcript: "' + transcription.transcript + '"';
 
   console.log("Creating completion...");
   const configuration = new Configuration({apiKey});
