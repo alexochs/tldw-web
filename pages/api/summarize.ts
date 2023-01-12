@@ -6,22 +6,29 @@ import { Configuration, OpenAIApi } from 'openai';
 
 const apiKey = "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";
 
-type Result = {
-  message: string,
-  error: boolean
-}
+import Cors from 'cors'
 
-export default async function handler(
+// Initializing the cors middleware
+// You can read more about the available options here: https://github.com/expressjs/cors#configuration-options
+const cors = Cors({
+  methods: ['POST', 'GET', 'HEAD'],
+  origin: "*"
+})
+
+// Helper method to wait for a middleware to execute before continuing
+// And to throw an error when an error happens in a middleware
+function runMiddleware(
   req: NextApiRequest,
-  res: NextApiResponse<Result>
+  res: NextApiResponse,
+  fn: Function
 ) {
-  /*await NextCors(req, res, {
-      methods: ['GET'],
-      origin: 'https://www.youtube.com/*',
-      optionsSuccessStatus: 200,
-   });*/
+  return new Promise((resolve, reject) => {
+    fn(req, res, async (result: any) => {
+      if (result instanceof Error) {
+        return reject(result)
+      }
 
-  const { videoId, title, userId } = req.query;
+      const { videoId, title, userId } = req.query;
 
   console.log("Checking if videoId and title are present...");
   if (!videoId || !title) {
@@ -125,4 +132,20 @@ export default async function handler(
      message: response.data.choices[0].text as string,
      error: false
   });
+
+      return resolve(result)
+    })
+  })
+}
+
+type Result = {
+  message: string,
+  error: boolean
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Result>
+) {
+  await runMiddleware(req, res, cors);
 }
