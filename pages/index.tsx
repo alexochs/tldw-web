@@ -70,7 +70,7 @@ export default function Home() {
                   Login ➡️
                 </Button>
                 <Button w="full" isDisabled={true} colorScheme={"blue"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={() => {router.push("/summaries");}}>
-                  Browse Summaries 📚
+                  Browse 🔜
                 </Button>
               </HStack>
             </Stack>
