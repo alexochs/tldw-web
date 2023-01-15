@@ -88,7 +88,7 @@ function runMiddleware(
   }});
   const transcription = await transcriptionResponse.json();
 
-  if (!transcription) {
+  if (!transcription || transcription.error) {
     res.status(400).json({
       message: "Missing transcription!",
       error: true

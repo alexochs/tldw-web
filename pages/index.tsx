@@ -11,8 +11,19 @@ export default function Home() {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState('')
-  const handleChange = (event: any) => setValue(event.target.value)
+  const [invalidUrl, setInvalidUrl] = useState(false);
+  const [url, setUrl] = useState('')
+  const handleChange = (event: any) => setUrl(event.target.url)
+
+  function goToSummary() {
+    if (url === "" || url === undefined || !url.includes("youtube.com/watch?v=")) {
+      setInvalidUrl(true);
+      return;
+    }
+    setInvalidUrl(false);
+    setLoading(true);
+    router.push("/summary?url=" + url);
+  }
 
   return (
     <>
@@ -38,7 +49,7 @@ export default function Home() {
           <Center>
             <Stack w={["95vw", "48rem"]} px="2.5vw">
               <Input
-                value={value}
+                value={url}
                 onChange={handleChange}
                 placeholder='Paste a YouTube URL in here and we&apos;ll do the magic! ✨'
                 size='lg'
@@ -49,7 +60,7 @@ export default function Home() {
                 maxW={["36rem", "80vw"]}
                 py="1rem"
               />
-              <Button isLoading={loading} colorScheme={"red"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={() => {router.push("/summary?url=" + value); setLoading(true)}}>
+              <Button isLoading={loading} colorScheme={"red"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={goToSummary}>
                 Sum it up 😎
               </Button>
               <Button isLoading={loading} colorScheme={"yellow"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={() => {router.push("/login");}}>
@@ -61,7 +72,7 @@ export default function Home() {
           <Center>
             <Stack w={["95vw", "36rem"]} px="2.5vw">
               <Heading fontSize={["3xl", "5xl"]}>TL;DW 2 GO 🏃‍♂️</Heading>
-              <Text fontSize={["lg", "2xl"]}>Download the Chrome extension for summaries on the go, directly on YouTube!</Text>
+              <Text fontSize={["lg", "2xl"]}>Download the Chrome extension for summaries on the go, directly on YouTube 👇</Text>
               <Button colorScheme={"red"} size="lg" rounded="2xl" disabled fontSize={["2xl", "3xl"]} p="2rem">
                 Coming soon 🚧
               </Button>
