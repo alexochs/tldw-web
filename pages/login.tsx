@@ -44,8 +44,8 @@ export default function ExtensionPage() {
     return (
     <>
       <Head>
-        <title>Too Lazy; Didn&apos;t Watch - YouTube Summary by AI</title>
-        <meta name="description" content="Too Lazy; Didn&apos;t Watch - YouTube Summary by AI" />
+        <title>Too Lazy; Didn&apos;t Watch - Login</title>
+        <meta name="description" content="Too Lazy; Didn&apos;t Watch - A database of YouTube summaries made by AI " />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

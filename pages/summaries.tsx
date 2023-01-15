@@ -49,40 +49,8 @@ export default function Home() {
           <Box py="1rem"/>
           <Center>
             <Stack w={["95vw", "48rem"]} px="2.5vw">
-              <Input
-                isInvalid={invalidUrl}
-                value={url}
-                onChange={handleChange}
-                placeholder='Paste a YouTube URL in here and we&apos;ll do the magic! ✨'
-                size='lg'
-                colorScheme={"red"}
-                variant="filled"
-                rounded="2xl"
-                fontSize={["md", "xl"]}
-                maxW={["36rem", "80vw"]}
-                py="1rem"
-              />
-              <Button isLoading={loading} colorScheme={"red"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={goToSummary}>
-                Sum it up 😎
-              </Button>
-              <HStack>
-                <Button w="full" isDisabled={loading} colorScheme={"yellow"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={() => {router.push("/login");}}>
-                  Login ➡️
-                </Button>
-                <Button w="full" isDisabled={true} colorScheme={"blue"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={() => {router.push("/summaries");}}>
-                  Browse Summaries 📚
-                </Button>
-              </HStack>
-            </Stack>
-          </Center>
-          <Box py="4rem"/>
-          <Center>
-            <Stack w={["95vw", "36rem"]} px="2.5vw">
-              <Heading fontSize={["3xl", "5xl"]}>TL;DW 2 GO 🏃‍♂️</Heading>
-              <Text fontSize={["lg", "2xl"]}>Download the Chrome extension for summaries on the go, directly on YouTube 👇</Text>
-              <Button colorScheme={"red"} size="lg" rounded="2xl" disabled fontSize={["2xl", "3xl"]} p="2rem">
-                Coming soon 🚧
-              </Button>
+              <Heading>Title</Heading>
+              <Text>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nam, necessitatibus aliquid assumenda repellat molestias unde? Nihil eligendi laudantium pariatur ad provident quidem quos odio, impedit hic accusamus repudiandae blanditiis dolores!</Text>
             </Stack>
           </Center>
         </Box>
