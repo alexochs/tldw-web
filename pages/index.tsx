@@ -49,6 +49,7 @@ export default function Home() {
           <Center>
             <Stack w={["95vw", "48rem"]} px="2.5vw">
               <Input
+                isInvalid={invalidUrl}
                 value={url}
                 onChange={handleChange}
                 placeholder='Paste a YouTube URL in here and we&apos;ll do the magic! ✨'
