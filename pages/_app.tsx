@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import type { AppProps } from 'next/app'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { useState } from 'react';
@@ -20,6 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
       <ChakraProvider theme={theme}>
         <Component {...pageProps} />
+        <Analytics/>
       </ChakraProvider>
     </SessionContextProvider>
   );
