@@ -51,8 +51,7 @@ export default function ExtensionPage() {
       </Head>
       <main>
         <Box w="100vw" minH="100vh" flexDir={"column"} fontSize="xl" pt="2rem" bg="rgb(232, 220, 202)">
-          <Link href="/">
-            <Center>
+            <Center onClick={() => router.push("/")}>
               <Heading fontSize={["5xl", "8xl"]}>
                 Too Lazy; 🥱<br/>Didn&apos;t Watch 👀
               </Heading>
@@ -62,7 +61,6 @@ export default function ExtensionPage() {
                 A database of YouTube summaries made by AI 🤖
               </Text>
             </Center>
-          </Link>
           <Box py="1rem"/>
           <Center>
             <Stack w={["95vw", "36rem"]} px="2.5vw">

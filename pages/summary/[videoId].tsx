@@ -43,7 +43,7 @@ export default function SummaryPage({videoId, title, error}: any) {
     async function summarize(videoId: string, title: string) {
         const response = await fetch("https://tldw.alexochs.de/api/summarize?videoId=" + videoId + "&title=" + title.replaceAll(" ", "%20%") + "&userId=644e9b54-f467-4fca-bbe5-546efa86c972");
         if (response.status != 200) {
-            setSummary({message: "Something went wrong 🤔. Make sure the video has english."});
+            setSummary({message: "Something went wrong 🤔\nMake sure the video has english subtitles."});
             return;
         }
 
@@ -60,31 +60,32 @@ export default function SummaryPage({videoId, title, error}: any) {
             </Head>
             <main>
                 <Box w="100vw" minH="100vh" flexDir={"column"} fontSize="xl" pt="2rem" bg="rgb(232, 220, 202)">
-                <Link href="/">
-                    <Center>
-                    <Heading fontSize={["5xl", "8xl"]}>
-                        Too Lazy; 🥱<br/>Didn&apos;t Watch 👀
-                    </Heading>
+                    <Center onClick={() => router.push("/")} cursor="pointer">
+                        <Heading fontSize={["5xl", "8xl"]}>
+                            Too Lazy; 🥱<br/>Didn&apos;t Watch 👀
+                        </Heading>
                     </Center>
                     <Center>
                     <Text fontSize={["md", "3xl"]} fontWeight={"normal"} pl="1rem" pr="2rem">
                         YouTube summaries made by AI 🤖
                     </Text>
                     </Center>
-                </Link>
-                <Box py={["1rem", "2rem"]}/>
-                <Center flexDir="column">
-                    <Heading>{title}</Heading>
-                    <Box py="0.5rem"/>
-                    {error ? <Text fontSize={["3xl", "4xl"]} fontWeight="bold">{error}</Text> : summary ? 
-                    <Text px="4rem">{summary.message}</Text> : <Spinner size="xl"/>}
-                </Center>
+                    <Box py={["1rem", "2rem"]}/>
+                    <Center flexDir="column">
+                        <Heading maxW={["90vw", "50vw"]} textAlign={"center"}>{title}</Heading>
+                        <Box py="0.5rem"/>
+                        {error ? <Text fontSize={["3xl", "4xl"]} fontWeight="bold">{error}</Text> : summary ? 
+                        <Text maxW={["90vw", "50vw"]} textAlign="justify">{summary.message}</Text> : <Spinner size="xl"/>}
+                    </Center>
+                    <Center py={["1rem", "2rem"]}>
+                        <Button fontSize="xl" rounded="full" colorScheme={"red"} onClick={() => router.push("/")}>ANOTHER ONE ☝️</Button>
+                    </Center>
+                    <Center py="1rem" bg="rgb(232, 220, 202)">
+                        <Link href="https://alexochs.de" target="_blank">
+                            <Text fontSize={["xs", "md"]}>Made with ❤️ by <b>Alex Ochs - Web & Software Developer 👨🏻‍💻</b></Text>
+                        </Link>
+                    </Center>
                 </Box>
-                <Center py="1rem" bg="rgb(232, 220, 202)">
-                <Link href="https://alexochs.de" target="_blank">
-                    <Text fontSize={["xs", "md"]}>Made with ❤️ by <b>Alex Ochs - Web & Software Developer 👨🏻‍💻</b></Text>
-                </Link>
-                </Center>
             </main>
         </>
     )

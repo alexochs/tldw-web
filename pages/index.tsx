@@ -74,12 +74,12 @@ export default function Home() {
                 size='lg'
                 colorScheme={"red"}
                 variant="filled"
-                rounded="2xl"
+                rounded="full"
                 fontSize={["md", "xl"]}
                 maxW={["36rem", "80vw"]}
                 py="1rem"
               />
-              <Button isLoading={loading} colorScheme={"red"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={goToSummary}>
+              <Button isLoading={loading} colorScheme={"red"} size="lg" rounded="full" fontSize={["2xl", "3xl"]} p="2rem" onClick={goToSummary}>
                 Sum it up! 😎
               </Button>
               <Center>
@@ -100,7 +100,7 @@ export default function Home() {
             <Stack w={["95vw", "36rem"]} px="2.5vw">
               <Heading fontSize={["3xl", "5xl"]}>TL;DW 2 GO 🏃‍♂️</Heading>
               <Text fontSize={["lg", "2xl"]}>Download the Chrome extension for summaries on the go, directly on YouTube 👇</Text>
-              <Button colorScheme={"red"} size="lg" rounded="2xl" disabled fontSize={["2xl", "3xl"]} p="2rem">
+              <Button colorScheme={"red"} size="lg" rounded="full" disabled fontSize={["2xl", "3xl"]} p="2rem">
                 Coming soon 🚧
               </Button>
             </Stack>
