@@ -5,6 +5,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { Configuration, OpenAIApi } from 'openai';
 
 const apiKey = "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";
+const publicUserId = "644e9b54-f467-4fca-bbe5-546efa86c972";
 
 import Cors from 'cors'
 

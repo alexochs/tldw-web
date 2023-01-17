@@ -1,8 +1,9 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import { Box, Button, Center, Heading, Input, Link, Stack, Text } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Box, Button, Center, Heading, Input, Link, Spinner, Stack, Text } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -12,7 +13,7 @@ function youtube_parser(url: any){
     return (match&&match[7].length==11)? match[7] : false;
 }
 
-// get server side props
+/* get server side props
 export async function getServerSideProps(context: any) {
   const { query } = context;
   const { url } = query;
@@ -39,11 +40,42 @@ export async function getServerSideProps(context: any) {
       summary
     }
   }
-}
+}*/
 
-export default function Summary({summary}: any) {
+export default function Summary({url}: any) {
+  const router = useRouter();
+
+  const [title, setTitle] = useState(null);
+  const [summary, setSummary] = useState(null);
   const [value, setValue] = useState('')
   const handleChange = (event: any) => setValue(event.target.value)
+
+  useEffect(() => {
+    if (!url) {
+      alert("No URL provided! Redirecting to home page...");
+      router.push("/");
+      return;
+    }
+
+    const videoId = youtube_parser(url);
+    if (!videoId) {
+      alert("No valid URL provided! Redirecting to home page...");
+      router.push("/");
+      return;
+    }
+
+    console.log("Fetching video with id: " + videoId + "");
+    fetch("https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + videoId + "&key=" + "AIzaSyDTE6cLA6Bbd0Z4kGVKUTXwke90lYHCIgo")
+      .then(response => {
+        const data = response.json().then(async (data: any) => {
+          if (data.items.length > 0) {
+            setTitle(data.items[0].snippet.title);
+            //const response = await fetch("http://tldw.alexochs.de/api/summarize?videoId=" + videoId + "&title=" + title.replaceAll(" ", "%20%") + "&userId=644e9b54-f467-4fca-bbe5-546efa86c972");
+            //summary = await response.json();
+          }
+        });
+      });
+  }, []);
 
   return (
     <>
@@ -62,22 +94,22 @@ export default function Summary({summary}: any) {
               </Heading>
             </Center>
             <Center>
-              <Text fontSize={["sm", "3xl"]} fontWeight={"normal"} pl="1rem" pr="2rem">
-                A database of YouTube summaries made by AI 🤖
+              <Text fontSize={["md", "3xl"]} fontWeight={"normal"} pl="1rem" pr="2rem">
+                YouTube summaries made by AI 🤖
               </Text>
             </Center>
           </Link>
-          <Box py="1rem"/>
+          <Box py="2rem"/>
           <Center>
-            <Stack w={["95vw", "36rem"]} px="2.5vw">
-              <Heading>{summary.title}</Heading>
+            <Heading>{title}</Heading>
+            {summary ? <Stack w={["95vw", "36rem"]} px="2.5vw">
               {summary.message.split(".").map((sentence: string, id: any) => {
                 return (
                   <Text key={id}>{sentence}</Text>
                 )
               })
               }
-            </Stack>
+            </Stack> : <Spinner size="xl"/>}
           </Center>
         </Box>
         <Center py="1rem" bg="rgb(232, 220, 202)">

@@ -43,7 +43,7 @@ export default function Home() {
           </Center>
           <Center>
             <Text fontSize={["sm", "3xl"]} fontWeight={"normal"} pl="1rem" pr="2rem">
-              A database of YouTube summaries made by AI 🤖
+              YouTube summaries made by AI 🤖
             </Text>
           </Center>
           <Box py="1rem"/>

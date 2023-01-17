@@ -10,20 +10,37 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
   const router = useRouter();
 
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [invalidUrl, setInvalidUrl] = useState(false);
   const [url, setUrl] = useState('')
-  const handleChange = (event: any) => setUrl(event.target.url)
+  const handleChange = (event: any) => setUrl(event.target.value)
+
+  function youtube_parser(url: any){
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var match = url.match(regExp);
+    return (match&&match[7].length==11)? match[7] : false;
+  }
 
   function goToSummary() {
     setLoading(true);
-    if (url === "" || url === undefined || !url.includes("youtube.com/watch?v=")) {
+
+    const videoId = youtube_parser(url);
+
+    if (url === "" || url === undefined || !url.includes("youtube.com/watch?v=") || !videoId) {
+      if (url === "" || url === undefined) {
+        setErrorMessage("Where's the URL you dummy? 🤦🏻‍♂️");
+      } else if (!url.includes("youtube.com/watch?v=") || !videoId) {
+        setErrorMessage("That URL doesn't seem valid 😅");
+      }
+
       setLoading(false);
       setInvalidUrl(true);
       return;
     }
+
     setInvalidUrl(false);
-    router.push("/summary?url=" + url);
+    router.push("/summary/" + videoId);
   }
 
   return (
@@ -42,8 +59,8 @@ export default function Home() {
             </Heading>
           </Center>
           <Center>
-            <Text fontSize={["sm", "3xl"]} fontWeight={"normal"} pl="1rem" pr="2rem">
-              A database of YouTube summaries made by AI 🤖
+            <Text fontSize={["md", "3xl"]} fontWeight={"normal"} pl="1rem" pr="2rem">
+              YouTube summaries made by AI 🤖
             </Text>
           </Center>
           <Box py="1rem"/>
@@ -63,16 +80,19 @@ export default function Home() {
                 py="1rem"
               />
               <Button isLoading={loading} colorScheme={"red"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={goToSummary}>
-                Sum it up 😎
+                Sum it up! 😎
               </Button>
-              <HStack>
+              <Center>
+                <Text fontSize={["md", "lg"]} color="red.600">{errorMessage}</Text>
+              </Center>
+              {/*<HStack>
                 <Button w="full" isDisabled={loading} colorScheme={"yellow"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={() => {router.push("/login");}}>
                   Login ➡️
                 </Button>
                 <Button w="full" isDisabled={true} colorScheme={"blue"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={() => {router.push("/summaries");}}>
                   Browse 🔜
                 </Button>
-              </HStack>
+              </HStack>*/}
             </Stack>
           </Center>
           <Box py="4rem"/>
