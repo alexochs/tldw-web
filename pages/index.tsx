@@ -59,13 +59,16 @@ export default function Home() {
             </Heading>
           </Center>
           <Center>
-            <Text fontSize={["md", "3xl"]} fontWeight={"normal"} pl="1rem" pr="2rem">
+            <Text fontSize={["lg", "3xl"]} fontWeight={"normal"} pl="1rem" pr="2rem">
               YouTube summaries made by AI 🤖
             </Text>
           </Center>
-          <Box py="1rem"/>
+          <Box py={["2rem"]}/>
           <Center>
             <Stack w={["95vw", "48rem"]} px="2.5vw">
+              <Center>
+                <Text fontWeight={"bold"} fontSize={["2xl", "4xl"]}>Give it a try 👇</Text>
+              </Center>
               <Input
                 isInvalid={invalidUrl}
                 value={url}

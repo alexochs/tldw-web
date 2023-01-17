@@ -66,7 +66,7 @@ export default function SummaryPage({videoId, title, error}: any) {
                         </Heading>
                     </Center>
                     <Center>
-                    <Text fontSize={["md", "3xl"]} fontWeight={"normal"} pl="1rem" pr="2rem">
+                    <Text fontSize={["lg", "3xl"]} fontWeight={"normal"} pl="1rem" pr="2rem">
                         YouTube summaries made by AI 🤖
                     </Text>
                     </Center>
