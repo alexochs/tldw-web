@@ -100,14 +100,17 @@ function runMiddleware(
       const metadata = metadataData.metadata;
 
       console.log("Creating prompt..." + title);
+      let prompt = "";
       let transcription = "";
+      let lastTimestamp = 0;
       for (const segment of metadata) {
         transcription += segment.text + " ";
+        const _prompt = 'Summarize the YouTube Video with the title "' + title.slice(0, title.length - 1) + '" and the following transcript: "' + transcription + '"';
+        const tokens = encode(_prompt).length;
+        if (tokens > 3840) break;
+        prompt = _prompt;
+        lastTimestamp = segment.start + segment.duration;
       }
-
-      console.log("Token amount: " + encode(transcription).length);
-
-      const prompt = 'Summarize a YouTube Video with the title "' + title.slice(0, title.length - 1) + '" and the following transcript: "' + transcription + '"';
 
       console.log("Creating completion...");
       const configuration = new Configuration({apiKey});
@@ -131,7 +134,7 @@ function runMiddleware(
       const { data: summaryData, error: summaryError } = await supabase
         .from('summaries')
         .insert([
-          { video_id: videoId, summary: response.data.choices[0].text as string },
+          { video_id: videoId, summary: response.data.choices[0].text as string, lastTimestamp },
         ]);
 
       if (summaryError) {
@@ -145,6 +148,7 @@ function runMiddleware(
       console.log("Successfully created summary!");
       res.status(200).json({
         message: response.data.choices[0].text as string,
+        lastTimestamp,
         error: false
       });
 

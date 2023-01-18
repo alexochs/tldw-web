@@ -74,6 +74,7 @@ export default function SummaryPage({videoId, title, error}: any) {
                     <Center flexDir="column">
                         <Heading maxW={["90vw", "50vw"]} textAlign={"center"}>{title}</Heading>
                         <Box py="0.5rem"/>
+                        {summary && <Text fontSize="lg">0:00 - {summary.lastTimestamp}</Text>}
                         {error ? <Text fontSize={["3xl", "4xl"]} fontWeight="bold">{error}</Text> : summary ? 
                         <Text maxW={["90vw", "50vw"]} textAlign="justify">{summary.message}</Text> : <Spinner size="xl"/>}
                     </Center>
