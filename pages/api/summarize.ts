@@ -53,6 +53,7 @@ function runMiddleware(
         console.log("Found video in database!");
         res.status(200).json({
           message: summaryRes.data[0].summary,
+          lastTimestamp: summaryRes.data[0].last_timestamp,
           error: false
         });
         return;
