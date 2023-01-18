@@ -109,7 +109,7 @@ function runMiddleware(
         const tokens = encode(_prompt).length;
         if (tokens > 3840) break;
         prompt = _prompt;
-        lastTimestamp = segment.start as number + segment.duration as number;
+        lastTimestamp = Math.round(segment.start as number + segment.duration as number);
       }
 
       console.log("Last timestamp: " + lastTimestamp);
