@@ -135,10 +135,10 @@ function runMiddleware(
       const { data: summaryData, error: summaryError } = await supabase
         .from('summaries')
         .insert([
-          { video_id: videoId, summary: response.data.choices[0].text as string, lastTimestamp },
+          { video_id: videoId, summary: response.data.choices[0].text as string, lastTimestamp: lastTimestamp },
         ]);
 
-      if (summaryError) {
+      if (summaryError || !summaryData) {
         res.status(400).json({
           message: "Error saving summary!",
           error: true
@@ -149,7 +149,7 @@ function runMiddleware(
       console.log("Successfully created summary!");
       res.status(200).json({
         message: response.data.choices[0].text as string,
-        lastTimestamp,
+        lastTimestamp: lastTimestamp,
         error: false
       });
 
