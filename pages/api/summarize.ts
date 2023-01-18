@@ -132,13 +132,13 @@ function runMiddleware(
       }
 
       console.log("Saving summary into database...");
-      const { data: summaryData, error: summaryError } = await supabase
+      const saveResponse = await supabase
         .from('summaries')
         .insert([
-          { video_id: videoId, summary: response.data.choices[0].text as string, lastTimestamp: lastTimestamp },
+          { video_id: videoId, summary: response.data.choices[0].text as string, last_timestamp: lastTimestamp },
         ]);
 
-      if (summaryError || !summaryData) {
+      if (saveResponse.error) {
         res.status(400).json({
           message: "Error saving summary!",
           error: true
