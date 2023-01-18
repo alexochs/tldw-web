@@ -22,11 +22,12 @@ export async function getServerSideProps(context: any) {
         props: {
             videoId: videoId,
             title: data.items[0].snippet.title,
+            channel: data.items[0].snippet.channelTitle,
         }
     }
 }
 
-export default function SummaryPage({videoId, title, error}: any) {
+export default function SummaryPage({videoId, title, channel, error}: any) {
     const router = useRouter();
 
     const [summary, setSummary] = useState<any>(null);
@@ -37,11 +38,11 @@ export default function SummaryPage({videoId, title, error}: any) {
             return;
         }
 
-        summarize(videoId, title);
+        summarize(videoId, title, channel);
     }, []);
 
-    async function summarize(videoId: string, title: string) {
-        const response = await fetch("https://tldw.alexochs.de/api/summarize?videoId=" + videoId + "&title=" + title.replaceAll(" ", "%20%") + "&userId=644e9b54-f467-4fca-bbe5-546efa86c972");
+    async function summarize(videoId: string, title: string, channel: string) {
+        const response = await fetch("https://tldw.alexochs.de/api/summarize?videoId=" + videoId + "&title=" + title.replaceAll(" ", "%20%") + "&channel=" + channel.replaceAll(" ", "%20%") + "&userId=644e9b54-f467-4fca-bbe5-546efa86c972");
         if (response.status != 200) {
             setSummary({message: "Something went wrong 🤔\nMake sure the video has english subtitles."});
             return;
@@ -72,9 +73,11 @@ export default function SummaryPage({videoId, title, error}: any) {
                     </Center>
                     <Box py={["1rem", "2rem"]}/>
                     <Center flexDir="column">
-                        <Heading maxW={["90vw", "50vw"]} textAlign={"center"}>{title}</Heading>
+                        <Link href={`https://youtube.com/watch?v=${videoId}`} target="_blank">
+                            <Heading maxW={["90vw", "50vw"]} textAlign={"center"}>{title}</Heading>
+                        </Link>
                         <Box py="0.5rem"/>
-                        {summary && <Text fontSize="lg">0:00 - {summary.lastTimestamp}</Text>}
+                        {summary && <Text fontSize="lg">0:00 - {Math.floor(summary.lastTimestamp / 60)}:{summary.lastTimestamp % 60}</Text>}
                         {error ? <Text fontSize={["3xl", "4xl"]} fontWeight="bold">{error}</Text> : summary ? 
                         <Text maxW={["90vw", "50vw"]} textAlign="justify">{summary.message}</Text> : <Spinner size="xl"/>}
                     </Center>

@@ -31,12 +31,12 @@ function runMiddleware(
         return reject(result)
       }
 
-      const { videoId, title, userId } = req.query;
+      const { videoId, title, channel, userId } = req.query;
 
       console.log("Checking if videoId and title are present...");
-      if (!videoId || !title) {
+      if (!videoId || !title || !channel || !userId) {
         res.status(400).json({
-          message: "Missing videoId or title!",
+          message: "Missing videoId, title, channel or userId!",
           error: true
         });
         return;
@@ -106,7 +106,7 @@ function runMiddleware(
       let lastTimestamp = 0;
       for (const segment of metadata) {
         transcription += segment.text + " ";
-        const _prompt = 'Summarize the YouTube Video with the title "' + title.slice(0, title.length - 1) + '" and the following transcript: "' + transcription + '"';
+        const _prompt = 'Summarize this video by ' + channel + ' with the title "' + title.slice(0, title.length - 1) + '" and the following transcript: "' + transcription + '"';
         const tokens = encode(_prompt).length;
         if (tokens > 3840) break;
         prompt = _prompt;
