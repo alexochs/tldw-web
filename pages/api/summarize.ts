@@ -106,9 +106,8 @@ function runMiddleware(
       }
 
       console.log("Token amount: " + encode(transcription).length);
-      return;
 
-      const prompt = 'Summarize a YouTube Video with the title "' + title.slice(0, title.length - 1) + '" and the following transcript: "' + transcription.transcript + '"';
+      const prompt = 'Summarize a YouTube Video with the title "' + title.slice(0, title.length - 1) + '" and the following transcript: "' + transcription + '"';
 
       console.log("Creating completion...");
       const configuration = new Configuration({apiKey});
