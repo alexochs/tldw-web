@@ -109,9 +109,10 @@ function runMiddleware(
         const tokens = encode(_prompt).length;
         if (tokens > 3840) break;
         prompt = _prompt;
-        lastTimestamp = segment.start + segment.duration;
+        lastTimestamp = segment.start as number + segment.duration as number;
       }
 
+      console.log("Last timestamp: " + lastTimestamp);
       console.log("Creating completion...");
       const configuration = new Configuration({apiKey});
       const openai = new OpenAIApi(configuration);
