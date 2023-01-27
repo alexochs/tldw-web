@@ -4,6 +4,8 @@ import { Inter } from '@next/font/google'
 import { Box, Button, Center, Heading, Input, Link, Spinner, Stack, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
 
 export async function getServerSideProps(context: any) {
     const { videoId } = context.params;
@@ -60,35 +62,24 @@ export default function SummaryPage({videoId, title, channel, error}: any) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                <Box w="100vw" minH="100vh" flexDir={"column"} fontSize="xl" pt="2rem" bg="rgb(232, 220, 202)">
-                    <Center onClick={() => router.push("/")} cursor="pointer">
-                        <Heading fontSize={["5xl", "8xl"]}>
-                            Too Lazy; 🥱<br/>Didn&apos;t Watch 👀
-                        </Heading>
-                    </Center>
-                    <Center>
-                    <Text fontSize={["lg", "3xl"]} fontWeight={"normal"} pl="1rem" pr="2rem">
-                        YouTube summaries made by AI 🤖
-                    </Text>
-                    </Center>
-                    <Box py={["1rem", "2rem"]}/>
-                    <Center flexDir="column">
+                <Box>
+                    <Navbar/>
+
+                    <Center flexDir="column" pt="4rem">
                         <Link href={`https://youtube.com/watch?v=${videoId}`} target="_blank">
                             <Heading maxW={["90vw", "50vw"]} textAlign={"center"}>{title}</Heading>
                         </Link>
                         <Box py="0.5rem"/>
-                        {summary && <Text fontSize="lg">0:00 - {Math.floor(summary.lastTimestamp / 60)}:{summary.lastTimestamp % 60}</Text>}
+                        {summary && <Text fontSize="md">0:00 - {Math.floor(summary.lastTimestamp / 60)}:{summary.lastTimestamp % 60}</Text>}
                         {error ? <Text fontSize={["3xl", "4xl"]} fontWeight="bold">{error}</Text> : summary ? 
-                        <Text maxW={["90vw", "50vw"]} textAlign="justify">{summary.message}</Text> : <Spinner size="xl"/>}
+                        <Text fontSize="lg" maxW={["90vw", "50vw"]} textAlign="justify">{summary.message}</Text> : <Spinner size="xl"/>}
                     </Center>
-                    <Center py={["1rem", "2rem"]}>
+
+                    {summary && <Center pt={["8rem", "8rem"]}>
                         <Button fontSize="xl" rounded="full" colorScheme={"red"} onClick={() => router.push("/")}>ANOTHER ONE ☝️</Button>
-                    </Center>
-                    <Center py="1rem" bg="rgb(232, 220, 202)">
-                        <Link href="https://alexochs.de" target="_blank">
-                            <Text fontSize={["xs", "md"]}>Made with ❤️ by <b>Alex Ochs - Web & Software Developer 👨🏻‍💻</b></Text>
-                        </Link>
-                    </Center>
+                    </Center>}
+                    
+                    <Footer/>
                 </Box>
             </main>
         </>
