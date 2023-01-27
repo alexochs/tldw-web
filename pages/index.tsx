@@ -4,6 +4,8 @@ import { Inter } from '@next/font/google'
 import { Box, Button, Center, Flex, Heading, HStack, Input, Link, Stack, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -52,19 +54,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Box w="100vw" minH="100vh" flexDir={"column"} fontSize="xl" pt="2rem" bg="rgb(232, 220, 202)">
-          <Center>
-            <Heading fontSize={["5xl", "8xl"]}>
-              Too Lazy; 🥱<br/>Didn&apos;t Watch 👀
-            </Heading>
-          </Center>
-          <Center>
-            <Text fontSize={["lg", "3xl"]} fontWeight={"normal"} pl="1rem" pr="2rem">
-              YouTube summaries made by AI 🤖
-            </Text>
-          </Center>
-          <Box py={["2rem"]}/>
-          <Center>
+        <Box>
+          <Navbar/>
+
+          <Heading textAlign={"center"} fontSize={["4xl", "7xl"]} pt="4rem" px="10vw">
+            <span style={{color: "red"}}>Maximize</span> your productivity.<br/><span style={{color: "red"}}>Waste less</span> time.
+          </Heading>
+
+          <Center pt="2rem">
             <Stack w={["95vw", "48rem"]} px="2.5vw">
               <Center>
                 <Text fontWeight={"bold"} fontSize={["2xl", "4xl"]}>Give it a try 👇</Text>
@@ -88,32 +85,15 @@ export default function Home() {
               <Center>
                 <Text fontSize={["md", "lg"]} color="red.600">{errorMessage}</Text>
               </Center>
-              {/*<HStack>
-                <Button w="full" isDisabled={loading} colorScheme={"yellow"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={() => {router.push("/login");}}>
-                  Login ➡️
-                </Button>
-                <Button w="full" isDisabled={true} colorScheme={"blue"} size="lg" rounded="2xl" fontSize={["2xl", "3xl"]} p="2rem" onClick={() => {router.push("/summaries");}}>
-                  Browse 🔜
-                </Button>
-              </HStack>*/}
             </Stack>
           </Center>
-          <Box py="4rem"/>
-          <Center>
-            <Stack w={["95vw", "36rem"]} px="2.5vw">
-              <Heading fontSize={["3xl", "5xl"]}>TL;DW 2 GO 🏃‍♂️</Heading>
-              <Text fontSize={["lg", "2xl"]}>Download the Chrome extension for summaries on the go, directly on YouTube 👇</Text>
-              <Button colorScheme={"red"} size="lg" rounded="full" disabled fontSize={["2xl", "3xl"]} p="2rem">
-                Coming soon 🚧
-              </Button>
-            </Stack>
+
+          <Center pt="8rem">
+            <Text>Chrome Extension coming soon...</Text>
           </Center>
+
+          <Footer/>
         </Box>
-        <Center pt="4rem" pb="1rem"  bg="rgb(232, 220, 202)">
-          <Link href="https://alexochs.de" target="_blank">
-            <Text fontSize={["xs", "md"]}>Made with ❤️ by <b>Alex Ochs - Web & Software Developer 👨🏻‍💻</b></Text>
-          </Link>
-        </Center>
       </main>
     </>
   )
