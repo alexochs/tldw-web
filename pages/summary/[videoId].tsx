@@ -44,7 +44,7 @@ export default function SummaryPage({videoId, title, channel, error}: any) {
     }, []);
 
     async function summarize(videoId: string, title: string, channel: string) {
-        const response = await fetch("https://tldw.alexochs.de/api/summarize?videoId=" + videoId + "&title=" + title.replaceAll(" ", "%20%") + "&channel=" + channel.replaceAll(" ", "%20%") + "&userId=644e9b54-f467-4fca-bbe5-546efa86c972");
+        const response = await fetch("https://lazywatch.app/api/summarize?videoId=" + videoId + "&title=" + title.replaceAll(" ", "%20%") + "&channel=" + channel.replaceAll(" ", "%20%") + "&userId=644e9b54-f467-4fca-bbe5-546efa86c972");
         if (response.status != 200) {
             setSummary({message: "Something went wrong 🤔\nMake sure the video has english subtitles."});
             return;

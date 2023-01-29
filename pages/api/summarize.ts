@@ -167,7 +167,7 @@ function runMiddleware(
 
           console.log("Successfully created summary!");
           res.status(200).json({
-            message: response.data.choices[0].text as string,
+            message: summary.summary + " " + response.data.choices[0].text as string, 
             lastTimestamp: lastTimestamp,
             error: false,
             complete: complete,
