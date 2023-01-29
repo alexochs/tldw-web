@@ -143,6 +143,7 @@ function runMiddleware(
 
           // update database with new summary
           console.log("Saving summary into database...");
+          console.log("Complete: " + complete);
           const saveResponse = await supabase
             .from('summaries')
             .insert([{
@@ -250,6 +251,7 @@ function runMiddleware(
       }
 
       console.log("Saving summary into database...");
+      console.log("Complete: " + complete);
       const saveResponse = await supabase
         .from('summaries')
         .insert([{
