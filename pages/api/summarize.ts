@@ -151,12 +151,13 @@ function runMiddleware(
             .from('summaries')
             .insert([{
               video_id: videoId, 
-              summary: summary.summary + response.data.choices[0].text as string, 
+              summary: summary.summary + " " + response.data.choices[0].text as string, 
               last_timestamp: lastTimestamp,
               complete: complete,
             },]);
 
           if (saveResponse.error) {
+            console.log(JSON.stringify(saveResponse.error));
             res.status(400).json({
               message: "Error saving summary!",
               error: true
@@ -172,7 +173,7 @@ function runMiddleware(
             complete: complete,
           });
 
-          return resolve(result)
+          return resolve(result);
         }
       }
 
