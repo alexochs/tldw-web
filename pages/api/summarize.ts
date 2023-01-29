@@ -110,6 +110,7 @@ function runMiddleware(
           let prompt = "";
           let transcription = "";
           let lastTimestamp = summary.last_timestamp;
+          console.log("Last timestamp: " + lastTimestamp);
           let complete = false;
           for (let i = 0; i < metadata.length; i++) {
             const segment = metadata[i];
@@ -149,7 +150,7 @@ function runMiddleware(
             .from('summaries')
             .insert([{
               video_id: videoId, 
-              summary: response.data.choices[0].text as string, 
+              summary: summary.summary + response.data.choices[0].text as string, 
               last_timestamp: lastTimestamp,
               complete: complete,
             },]);
