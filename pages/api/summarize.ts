@@ -149,7 +149,7 @@ function runMiddleware(
           console.log("Complete: " + complete);
           const saveResponse = await supabase
             .from('summaries')
-            .insert([{
+            .update([{
               video_id: videoId, 
               summary: summary.summary + " " + response.data.choices[0].text as string, 
               last_timestamp: lastTimestamp,
