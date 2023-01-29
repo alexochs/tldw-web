@@ -150,11 +150,11 @@ function runMiddleware(
           const saveResponse = await supabase
             .from('summaries')
             .update([{
-              video_id: videoId, 
               summary: summary.summary + " " + response.data.choices[0].text as string, 
               last_timestamp: lastTimestamp,
               complete: complete,
-            },]);
+            },])
+            .eq("video_id", videoId);
 
           if (saveResponse.error) {
             console.log(JSON.stringify(saveResponse.error));
