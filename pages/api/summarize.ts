@@ -110,7 +110,8 @@ function runMiddleware(
           let prompt = "";
           let transcription = "";
           let lastTimestamp = summary.last_timestamp;
-          console.log("Last timestamp: " + lastTimestamp);
+          console.log("Summary's Last timestamp: " + lastTimestamp);
+          console.log("Final Timestamp: " + Math.round(metadata[metadata.length - 1].start as number + metadata[metadata.length - 1].duration as number));
           let complete = false;
           for (let i = 0; i < metadata.length; i++) {
             const segment = metadata[i];
