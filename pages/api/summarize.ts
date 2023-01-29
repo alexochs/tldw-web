@@ -58,7 +58,8 @@ function runMiddleware(
           res.status(200).json({
             message:summary.summary,
             lastTimestamp: summary.last_timestamp,
-            error: false
+            error: false,
+            complete: summary.complete,
           });
           return;
         } else {
@@ -118,7 +119,7 @@ function runMiddleware(
             if (tokens > 3840) break;
             prompt = _prompt;
             lastTimestamp = Math.round(segment.start as number + segment.duration as number);
-            complete = i == metadata.length - 1;
+            complete = (i == metadata.length - 1);
           }
 
           console.log("Last timestamp: " + lastTimestamp);
@@ -148,9 +149,9 @@ function runMiddleware(
               video_id: videoId, 
               summary: response.data.choices[0].text as string, 
               last_timestamp: lastTimestamp,
-              complete,
+              complete: complete,
             },]);
-            
+
           if (saveResponse.error) {
             res.status(400).json({
               message: "Error saving summary!",
@@ -164,7 +165,7 @@ function runMiddleware(
             message: response.data.choices[0].text as string,
             lastTimestamp: lastTimestamp,
             error: false,
-            complete,
+            complete: complete,
           });
 
           return resolve(result)
