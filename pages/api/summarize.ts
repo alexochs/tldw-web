@@ -51,14 +51,6 @@ function runMiddleware(
 
       if (!summaryRes.error && summaryRes.data[0]) {
         console.log("Found video in database!");
-<<<<<<< Updated upstream
-        res.status(200).json({
-          message: summaryRes.data[0].summary,
-          lastTimestamp: summaryRes.data[0].last_timestamp,
-          error: false
-        });
-        return;
-=======
         const summary = summaryRes.data[0];
 
         if (summary.complete) {
@@ -72,6 +64,7 @@ function runMiddleware(
           return;
         } else {
           console.log("Video is not completely summarized!");
+          console.log("Creating new prompt...");
           
           console.log("Checking if user is authenticated...");
           console.log("userId: " + userId);
@@ -116,11 +109,10 @@ function runMiddleware(
           console.log("Creating prompt..." + title);
           let prompt = "";
           let transcription = "";
-          let lastTimestamp = summary.last_timestamp;
+          let lastTimestamp = 0;
           let complete = false;
           for (let i = 0; i < metadata.length; i++) {
             const segment = metadata[i];
-            if (summary.last_timestamp <= Math.round(segment.start as number + segment.duration as number)) continue;
             transcription += segment.text + " ";
             const _prompt = 'Continue to summarize this video by ' + channel + ' with the title "' + title.slice(0, title.length - 1) + '" and the following transcript: "' + transcription + '"';
             const tokens = encode(_prompt).length;
@@ -179,10 +171,10 @@ function runMiddleware(
 
           return resolve(result)
         }
->>>>>>> Stashed changes
       }
 
       console.log("Creating new summary...");
+
       console.log("Checking if user is authenticated...");
       console.log("userId: " + userId);
       const { data, error } = await supabase
@@ -227,13 +219,16 @@ function runMiddleware(
       let prompt = "";
       let transcription = "";
       let lastTimestamp = 0;
-      for (const segment of metadata) {
+      let complete = false;
+      for (let i = 0; i < metadata.length; i++) {
+        const segment = metadata[i];
         transcription += segment.text + " ";
         const _prompt = 'Summarize this video by ' + channel + ' with the title "' + title.slice(0, title.length - 1) + '" and the following transcript: "' + transcription + '"';
         const tokens = encode(_prompt).length;
         if (tokens > 3840) break;
         prompt = _prompt;
         lastTimestamp = Math.round(segment.start as number + segment.duration as number);
+        complete = i == metadata.length - 1;
       }
 
       console.log("Last timestamp: " + lastTimestamp);
@@ -256,11 +251,15 @@ function runMiddleware(
       }
 
       console.log("Saving summary into database...");
+      console.log("Complete: " + complete);
       const saveResponse = await supabase
         .from('summaries')
-        .insert([
-          { video_id: videoId, summary: response.data.choices[0].text as string, last_timestamp: lastTimestamp },
-        ]);
+        .insert([{
+          video_id: videoId, 
+          summary: response.data.choices[0].text as string, 
+          last_timestamp: lastTimestamp,
+          complete,
+        },]);
 
       if (saveResponse.error) {
         res.status(400).json({
@@ -274,7 +273,8 @@ function runMiddleware(
       res.status(200).json({
         message: response.data.choices[0].text as string,
         lastTimestamp: lastTimestamp,
-        error: false
+        error: false,
+        complete,
       });
 
       return resolve(result)
