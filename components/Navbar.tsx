@@ -9,11 +9,7 @@ export default function Navbar() {
                     <Heading fontSize={["xl", "3xl"]} color="red">.</Heading>
                     <Heading fontSize={["xl", "3xl"]}>ai</Heading>
     </Flex>*/}
-                <Flex>
-                    <Heading fontSize={["xl", "3xl"]}>Too Lazy</Heading>
-                    <Heading fontSize={["xl", "3xl"]} color="red">;&nbsp;</Heading>
-                    <Heading fontSize={["xl", "3xl"]}>Didn&apos;t Watch</Heading>
-                </Flex>
+                    <Heading fontSize={["xl", "3xl"]}>Lazy<span color="red">Watch</span></Heading>
             </Center>
         </Box>
     );
