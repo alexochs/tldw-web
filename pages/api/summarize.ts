@@ -109,13 +109,13 @@ function runMiddleware(
           console.log("Creating prompt..." + title);
           let prompt = "";
           let transcription = "";
-          let lastTimestamp = summary.last_timestamp;
-          console.log("Summary's Last timestamp: " + lastTimestamp);
+          let lastTimestamp = 0;
+          console.log("Summary's Last timestamp: " + summary.last_timestamp);
           console.log("Final Timestamp: " + Math.round(metadata[metadata.length - 1].start as number + metadata[metadata.length - 1].duration as number));
           let complete = false;
           for (let i = 0; i < metadata.length; i++) {
             const segment = metadata[i];
-            if (Math.round(segment.start as number + segment.duration as number) <= lastTimestamp) continue;
+            if (Math.round(segment.start as number + segment.duration as number) <= summary.last_timestamp) continue;
             transcription += segment.text + " ";
             const _prompt = 'Continue to summarize this video by ' + channel + ' with the title "' + title.slice(0, title.length - 1) + '" and the following transcript: "' + transcription + '"';
             const tokens = encode(_prompt).length;
