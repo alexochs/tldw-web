@@ -51,12 +51,135 @@ function runMiddleware(
 
       if (!summaryRes.error && summaryRes.data[0]) {
         console.log("Found video in database!");
+<<<<<<< Updated upstream
         res.status(200).json({
           message: summaryRes.data[0].summary,
           lastTimestamp: summaryRes.data[0].last_timestamp,
           error: false
         });
         return;
+=======
+        const summary = summaryRes.data[0];
+
+        if (summary.complete) {
+          console.log("Video is already completely summarized!");
+          res.status(200).json({
+            message:summary.summary,
+            lastTimestamp: summary.last_timestamp,
+            error: false,
+            complete: summary.complete,
+          });
+          return;
+        } else {
+          console.log("Video is not completely summarized!");
+          
+          console.log("Checking if user is authenticated...");
+          console.log("userId: " + userId);
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('id')
+            .eq("id", userId);
+
+          if (error) {
+            res.status(400).json({
+              message: "Error fetching profiles!",
+              error: true
+            });
+            return;
+          }
+
+          if (data[0].id !== userId) {
+            res.status(400).json({
+              message: "Unauthenticated!",
+              error: true
+            });
+            return;
+          }
+
+          console.log("Fetching transcription...");
+          const metadataResponse = await fetch(`https://tldw-python.vercel.app/api?videoId=${videoId}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+          }});
+          const metadataData = await metadataResponse.json();
+
+          if (!metadataData || metadataData.error) {
+            res.status(400).json({
+              message: "Missing transcription!",
+              error: true
+            });
+            return;
+          }
+          const metadata = metadataData.metadata;
+
+          console.log("Creating prompt..." + title);
+          let prompt = "";
+          let transcription = "";
+          let lastTimestamp = summary.last_timestamp;
+          let complete = false;
+          for (let i = 0; i < metadata.length; i++) {
+            const segment = metadata[i];
+            if (summary.last_timestamp <= Math.round(segment.start as number + segment.duration as number)) continue;
+            transcription += segment.text + " ";
+            const _prompt = 'Continue to summarize this video by ' + channel + ' with the title "' + title.slice(0, title.length - 1) + '" and the following transcript: "' + transcription + '"';
+            const tokens = encode(_prompt).length;
+            if (tokens > 3840) break;
+            prompt = _prompt;
+            lastTimestamp = Math.round(segment.start as number + segment.duration as number);
+            complete = (i == metadata.length - 1);
+          }
+
+          console.log("Last timestamp: " + lastTimestamp);
+          console.log("Creating completion...");
+          const configuration = new Configuration({apiKey});
+          const openai = new OpenAIApi(configuration);
+          const response = await openai.createCompletion({
+            model: "text-davinci-003",
+            prompt: prompt,
+            temperature: 0.5,
+            max_tokens: 256,
+          });
+
+          if (response.data.choices[0].text === "undefined") {
+            res.status(400).json({
+              message: "Error creating completion!",
+              error: true
+            });
+            return;
+          }
+
+          // update database with new summary
+          console.log("Saving summary into database...");
+          console.log("Complete: " + complete);
+          const saveResponse = await supabase
+            .from('summaries')
+            .insert([{
+              video_id: videoId, 
+              summary: response.data.choices[0].text as string, 
+              last_timestamp: lastTimestamp,
+              complete: complete,
+            },]);
+
+          if (saveResponse.error) {
+            res.status(400).json({
+              message: "Error saving summary!",
+              error: true
+            });
+            return;
+          }
+
+          console.log("Successfully created summary!");
+          res.status(200).json({
+            message: response.data.choices[0].text as string,
+            lastTimestamp: lastTimestamp,
+            error: false,
+            complete: complete,
+          });
+
+          return resolve(result)
+        }
+>>>>>>> Stashed changes
       }
 
       console.log("Creating new summary...");
