@@ -35,6 +35,8 @@ export default function SummaryPage({videoId, title, channel, error}: any) {
     const [summary, setSummary] = useState<any>(null);
 
     useEffect(() => {
+        console.log("useEffect()");
+
         if (error) {
             router.push("/");
             return;
@@ -44,12 +46,16 @@ export default function SummaryPage({videoId, title, channel, error}: any) {
     }, []);
 
     async function summarize(videoId: string, title: string, channel: string) {
+        console.log("Summarizing...");
+
         const response = await fetch("https://www.lazywatch.app/api/summarize?videoId=" + videoId + "&title=" + title.replaceAll(" ", "%20%") + "&channel=" + channel.replaceAll(" ", "%20%") + "&userId=644e9b54-f467-4fca-bbe5-546efa86c972");
         if (response.status != 200) {
+            console.error("Error: " + response.status);
             setSummary({message: "Something went wrong 🤔\nMake sure the video has english subtitles."});
             return;
         }
 
+        console.log("Summary Success!")
         setSummary(await response.json());
     }
 
